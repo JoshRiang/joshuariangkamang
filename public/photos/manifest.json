@@ -1,6 +1,39 @@
 {
-  "name": "Joshua Riangkamang — Portfolio",
-  "version": "0.1.0",
-  "private": false,
-  "description": "Personal portfolio site — quant research, engineering, photography"
+  "photos": [
+    {
+      "src": "photos/img_d29ca888a1f9.jpg",
+      "title": "Satellite Birds",
+      "alt": "Birds on a Starlink dish at golden hour, three of them, looking out."
+    }
+,
+    {
+      "src": "photos/img_f462039d558d.jpg",
+      "title": "Sparrow on the Wire",
+      "alt": "Single sparrow on a power line, hazy daylight, low contrast."
+    }
+,
+    {
+      "src": "photos/img_fceafc429c12.jpg",
+      "title": "White Cat",
+      "alt": "Close-up of a white longhair cat, turquoise background, golden eyes."
+    }
+,
+    {
+      "src": "photos/img_94d7faecb1d1.jpg",
+      "title": "Puffed Up",
+      "alt": "Small bird puffed up on a power line at dusk."
+    }
+,
+    {
+      "src": "photos/img_35432a5977e7.jpg",
+      "title": "Dried Fruit",
+      "alt": "Close-up of a dried fruit (looks like a mango or sapodilla) hanging."
+    }
+,
+    {
+      "src": "photos/img_b88fd0d5655e.jpg",
+      "title": "Three Boys",
+      "alt": "Three boys playing on a paved street at golden hour, Indonesia."
+    }
+  ]
 }
