@@ -1,25 +1,24 @@
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { JetBrains_Mono, Inter } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
-const jetbrains = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
+const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap', weight: ['300', '400', '500', '600', '700'] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
 
 export const metadata: Metadata = {
-  title: 'Joshua Riangkamang — Quantitative Researcher & Software Engineer',
-  description:
-    'Personal portfolio of Joshua Riangkamang. Quantitative finance, trading systems, software engineering, and photography.',
+  title: 'joshua.riangkamang — ~/portfolio',
+  description: 'Quantitative researcher and software engineer. Working on systematic trading systems.',
   openGraph: {
     title: 'Joshua Riangkamang',
-    description: 'Quantitative Researcher · Software Engineer · Photographer',
+    description: 'Quant researcher · software engineer · photographer',
     type: 'website',
   },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrains.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+    <html lang="en" className={`${mono.variable} ${inter.variable}`}>
+      <body className="font-mono">{children}</body>
     </html>
   );
 }

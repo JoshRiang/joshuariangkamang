@@ -1,50 +1,31 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import {
-  Github, Linkedin, Mail, Send, ArrowUpRight, ArrowDownRight, ArrowRight,
-  Code2, Camera, Sparkles, TrendingUp, Terminal, Cpu, BookOpen, MapPin, Quote,
-} from 'lucide-react';
 
 // ============================================================================// DATA
 // ============================================================================
 const PROJECTS = [
-  { name: 'backtest-harness', tag: 'Quant', blurb: 'Walk-forward backtest engine with Sharpe, Sortino, Calmar, drawdown, parameter sweep.' },
-  { name: 'kelly-sizer', tag: 'Risk', blurb: 'Position sizing from edge + vol. Full Kelly, fractional Kelly, vol targeting.' },
-  { name: 'portfolio-risk-dashboard', tag: 'Risk', blurb: 'FastAPI for VaR, CVaR, correlation, sector exposure, stress scenarios.' },
-  { name: 'pairs-trader', tag: 'Stat-Arb', blurb: 'Engle-Granger cointegration, half-life mean reversion, z-score backtester.' },
-  { name: 'regime-detector', tag: 'ML', blurb: '3-state Gaussian HMM + GARCH(1,1) to classify vol regimes and forecast next-day vol.' },
-  { name: 'factor-research', tag: 'Quant', blurb: 'Momentum, value, quality, low-vol factor backtests with decile spreads and Spearman IC.' },
-  { name: 'market-data-store', tag: 'Infra', blurb: 'Parquet time-series store partitioned by ticker/year, with deterministic replay engine.' },
-  { name: 'trading-bot', tag: 'Execution', blurb: 'Broker-agnostic execution engine with order state machine, kill switch, structlog JSON.' },
-  { name: 'strategy-dsl', tag: 'Quant', blurb: 'Custom DSL + recursive-descent parser + compiler. Strategies as plain text.' },
-  { name: 'quant-research-platform', tag: 'Platform', blurb: 'Flagship: strategy plugins, walk-forward backtest, paper trading, FastAPI, Streamlit, Docker.' },
+  { name: 'quant-research-platform', desc: 'flagship: strategies, backtest, paper, FastAPI, Streamlit, Docker', lang: 'py', status: 'active' },
+  { name: 'strategy-dsl',             desc: 'custom DSL + parser + compiler. strategies as plain text',         lang: 'py', status: 'active' },
+  { name: 'trading-bot',               desc: 'broker-agnostic engine, order state machine, kill switch',         lang: 'py', status: 'active' },
+  { name: 'market-data-store',         desc: 'parquet time-series store, deterministic replay engine',           lang: 'py', status: 'active' },
+  { name: 'factor-research',           desc: 'momentum/value/quality/low-vol factor backtests, IC',              lang: 'py', status: 'active' },
+  { name: 'regime-detector',           desc: '3-state Gaussian HMM + GARCH(1,1) for vol regime',                lang: 'py', status: 'active' },
+  { name: 'pairs-trader',              desc: 'cointegration, half-life, z-score backtester',                    lang: 'py', status: 'active' },
+  { name: 'portfolio-risk-dashboard',  desc: 'FastAPI: VaR, CVaR, correlation, sector exposure, stress',         lang: 'py', status: 'active' },
+  { name: 'kelly-sizer',               desc: 'position sizing from edge + vol, full Kelly, vol targeting',        lang: 'py', status: 'active' },
+  { name: 'backtest-harness',          desc: 'walk-forward backtest, Sharpe, Sortino, Calmar, drawdown',         lang: 'py', status: 'active' },
 ];
 
 const TIMELINE = [
-  { year: '2024', title: 'Started at Universitas Indonesia', body: 'Computer Engineering. First year exploring CS fundamentals, Python, and Linux.' },
-  { year: '2025', title: 'Joined ACC Starship (Astra Sedaya Finance)', body: 'Built monitoring platform, ~70% manual work automated. Strategy + QA + execution.' },
-  { year: '2025', title: 'Quant pivot', body: 'Built Kelly+Vol engine, Pluang book overlay, 10 quant repos, nightly reports.' },
-  { year: '2026', title: 'Where I am now', body: 'Targeting investment analyst / algo trading roles. Pushing this portfolio to next level.' },
+  { year: '2024', title: 'Universitas Indonesia', body: 'Computer Engineering. Built foundation in CS, Python, Linux.' },
+  { year: '2025', title: 'ACC Starship intern',   body: 'Astra Sedaya Finance. Monitoring platform, 70% manual work automated.' },
+  { year: '2025', title: 'Quant pivot',           body: 'Kelly+Vol engine, Pluang book overlay, 10 quant repos, nightly reports.' },
+  { year: '2026', title: 'Now',                   body: 'Targeting investment analyst / algo trading roles. Pushing this site to v1.' },
 ];
 
 // ============================================================================// HOOKS
 // ============================================================================
-function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const els = ref.current?.querySelectorAll('[data-reveal]');
-    if (!els) return;
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); }),
-      { threshold: 0.15 }
-    );
-    els.forEach(el => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
-  return ref;
-}
-
 function useCount(target: number, duration = 1500) {
   const [n, setN] = useState(0);
   useEffect(() => {
@@ -62,156 +43,102 @@ function useCount(target: number, duration = 1500) {
   return n;
 }
 
-// ============================================================================// HEADER (vertical, no full hero takeover)
+// ============================================================================// HEADER
 // ============================================================================
 function Header() {
   return (
     <header className="header">
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#top" className="logo">JR</a>
-        <ul className="nav-links">
-          <li><a href="#work">Work</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#timeline">Timeline</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li>
-            <a href="https://github.com/JoshRiang" target="_blank" rel="noopener noreferrer" className="nav-icon" aria-label="GitHub">
-              <Github className="w-4 h-4" />
-            </a>
-          </li>
-        </ul>
+      <div className="header-inner">
+        <div className="header-path">
+          ~/<span className="path-segment">portfolio</span>/<span className="path-active">README.md</span>
+        </div>
+        <nav className="nav">
+          <a href="#work">work</a>
+          <a href="#about">about</a>
+          <a href="#timeline">timeline</a>
+          <a href="#gallery">gallery</a>
+          <a href="#contact">contact</a>
+        </nav>
       </div>
     </header>
   );
 }
 
-// ============================================================================// INTRO (top, name + role + counters + portrait card)
+// ============================================================================// HERO (terminal session)
 // ============================================================================
-function Intro() {
+function Hero() {
   const repos = useCount(10);
   const tests = useCount(150);
-  const intern = useCount(3);
-  const ref = useReveal();
   return (
-    <section id="top" ref={ref} className="intro pt-32 pb-20">
-      <div className="max-w-6xl mx-auto px-6">
-        <p data-reveal className="reveal eyebrow">Joshua Riangkamang</p>
-        <h1 data-reveal className="reveal title">
-          Building tools for<br />
-          <span className="text-accent">systematic traders</span>.
-        </h1>
-        <p data-reveal className="reveal subtitle">
-          Computer Engineering at Universitas Indonesia, interning at Astra Sedaya Finance.
-          I ship quant research tools, trading infrastructure, and the occasional photo essay.
-        </p>
-
-        {/* BENTO GRID: 12-col, asymmetric */}
-        <div className="bento mt-12">
-          {/* Portrait card — wide */}
-          <div data-reveal className="reveal bento-portrait">
-            <img src="/img/portrait.jpg" alt="Joshua Riangkamang" />
-            <div className="portrait-overlay">
-              <div className="portrait-meta">
-                <span className="status-dot" />
-                Available for internships
-              </div>
-            </div>
-          </div>
-
-          {/* Stats card — counter */}
-          <div data-reveal className="reveal bento-stat">
-            <div className="stat-num">{repos}<span className="text-faint">+</span></div>
-            <div className="stat-label">Public repos</div>
-            <div className="stat-bar">
-              <div className="stat-bar-fill" style={{ width: '100%' }} />
-            </div>
-          </div>
-
-          {/* Tests counter */}
-          <div data-reveal className="reveal bento-stat">
-            <div className="stat-num">{tests}<span className="text-faint">+</span></div>
-            <div className="stat-label">Tests passing</div>
-            <div className="stat-bar">
-              <div className="stat-bar-fill" style={{ width: '85%' }} />
-            </div>
-          </div>
-
-          {/* Status card — quote */}
-          <div data-reveal className="reveal bento-quote">
-            <Quote className="w-5 h-5 text-faint mb-2" />
-            <p className="text-sm leading-relaxed">
-              "What gets measured gets managed."
-            </p>
-            <p className="text-xs text-faint mt-1">— Peter Drucker</p>
-          </div>
-
-          {/* Now playing / status */}
-          <div data-reveal className="reveal bento-status">
-            <div className="flex items-center gap-2 text-xs text-faint mb-2">
-              <span className="status-dot" /> Currently
-            </div>
-            <p className="text-sm">Pushing Vector Financial Planner to v1.0</p>
-            <p className="text-xs text-faint mt-1">Flutter · shared_preferences · Cupertino</p>
-          </div>
-
-          {/* Location */}
-          <div data-reveal className="reveal bento-loc">
-            <MapPin className="w-4 h-4 text-accent mb-1" />
-            <p className="text-sm">Jakarta, ID</p>
-            <p className="text-xs text-faint">UTC+7 · WIB</p>
-          </div>
-
-          {/* Internship counter */}
-          <div data-reveal className="reveal bento-stat bento-stat-wide">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="stat-num">{intern}</div>
-                <div className="stat-label">Internships</div>
-              </div>
-              <Cpu className="w-8 h-8 text-faint" />
-            </div>
-          </div>
-        </div>
-      </div>
+    <section className="hero" id="top">
+      <p className="hero-line delay-1 prompt">
+        <span className="fn">cat</span> <span className="path">~/portfolio/README.md</span>
+      </p>
+      <p className="hero-line delay-2">
+        <span className="comment"># Joshua Riangkamang</span>
+      </p>
+      <p className="hero-line delay-2">
+        <span className="comment"># Quantitative researcher and software engineer, Jakarta</span>
+      </p>
+      <p className="hero-line delay-3">
+        <span className="comment"># Working on systematic trading systems.</span>
+      </p>
+      <p className="hero-line delay-4">&nbsp;</p>
+      <p className="hero-line delay-4">
+        <span className="keyword">export const</span> <span className="fn">profile</span> = {'{'}
+      </p>
+      <p className="hero-line delay-4">
+        {'  '}<span className="key">role</span>: <span className="string">"quantitative researcher"</span>,
+      </p>
+      <p className="hero-line delay-4">
+        {'  '}<span className="key">stack</span>: [<span className="string">"python"</span>, <span className="string">"flutter"</span>, <span className="string">"next.js"</span>],
+      </p>
+      <p className="hero-line delay-4">
+        {'  '}<span className="key">targeting</span>: <span className="string">"investment analyst / algo trading"</span>,
+      </p>
+      <p className="hero-line delay-4">
+        {'  '}<span className="key">status</span>: <span className="string">"open to roles"</span>,
+      </p>
+      <p className="hero-line delay-4">{'}'}</p>
+      <p className="hero-line delay-5">&nbsp;</p>
+      <p className="hero-line delay-5">
+        <span className="comment">$</span> <span className="fn">ls</span> <span className="path">~/projects</span> | <span className="fn">wc</span> -l
+        <span style={{ color: 'var(--green)' }}> &nbsp;{repos}</span>
+        <span className="text-fg-faint"> repos</span>
+        <span style={{ color: 'var(--amber)' }}> &nbsp;{tests}+</span>
+        <span className="text-fg-faint"> tests</span>
+        <span className="cursor" />
+      </p>
     </section>
   );
 }
 
-// ============================================================================// WORK (bento grid of projects)
+// ============================================================================// STATS
 // ============================================================================
-function Work({ projects }: { projects: typeof PROJECTS }) {
-  const ref = useReveal();
+function Stats() {
+  const repos = useCount(10);
+  const tests = useCount(150);
+  const intern = useCount(3);
+  const photos = useCount(6);
   return (
-    <section id="work" ref={ref} className="py-24">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="section-head">
-          <p data-reveal className="reveal eyebrow">— 02</p>
-          <h2 data-reveal className="reveal section-title">Selected work</h2>
-          <p data-reveal className="reveal section-sub">
-            10 open-source projects. Each shipped with tests, docs, and a real use case.
-          </p>
+    <section className="section" id="stats">
+      <h2 className="section-title">stats</h2>
+      <div className="stats-grid">
+        <div className="stat-cell">
+          <div className="stat-value">{repos}</div>
+          <div className="stat-label">public repos</div>
         </div>
-
-        <div className="bento bento-projects">
-          {projects.map((p, i) => (
-            <a
-              key={p.name}
-              href={`https://github.com/JoshRiang/${p.name}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-reveal
-              className={`reveal bento-project ${i === 0 ? 'bento-project-feature' : ''}`}
-            >
-              <div className="flex items-start justify-between mb-3">
-                <Code2 className="w-5 h-5 text-faint" />
-                <ArrowUpRight className="w-4 h-4 text-faint" />
-              </div>
-              <div className="text-xs font-mono text-faint mb-1">{p.tag}</div>
-              <div className="font-semibold text-base mb-2">{p.name}</div>
-              <p className="text-xs text-faint leading-relaxed flex-1">{p.blurb}</p>
-            </a>
-          ))}
+        <div className="stat-cell">
+          <div className="stat-value">{tests}+</div>
+          <div className="stat-label">tests</div>
+        </div>
+        <div className="stat-cell">
+          <div className="stat-value">{intern}</div>
+          <div className="stat-label">internships</div>
+        </div>
+        <div className="stat-cell">
+          <div className="stat-value">{photos}</div>
+          <div className="stat-label">photos</div>
         </div>
       </div>
     </section>
@@ -221,50 +148,60 @@ function Work({ projects }: { projects: typeof PROJECTS }) {
 // ============================================================================// ABOUT
 // ============================================================================
 function About() {
-  const ref = useReveal();
   return (
-    <section id="about" ref={ref} className="py-24 border-t border-white/5">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="section-head">
-          <p data-reveal className="reveal eyebrow">— 01</p>
-          <h2 data-reveal className="reveal section-title">About</h2>
-        </div>
+    <section className="section" id="about">
+      <h2 className="section-title">about.md</h2>
+      <div className="about-text">
+        <p>
+          <span className="comment">#</span> I&apos;m a Computer Engineering student at
+          <span className="highlight"> Universitas Indonesia</span>, interning at
+          <span className="highlight"> Astra Sedaya Finance (ACC)</span> on the Starship program.
+        </p>
+        <p>
+          <span className="comment">#</span> I build research infrastructure and trading systems
+          that close the gap between academic finance and shipping production code.
+          My work spans market-data backtesters, regime-detection models, Kelly-based
+          position sizing, and event-driven execution frameworks.
+        </p>
+        <p>
+          <span className="comment">#</span> Stack:{' '}
+          <span className="val">python</span>, <span className="val">pandas</span>,{' '}
+          <span className="val">flutter</span>, <span className="val">next.js</span>,{' '}
+          <span className="val">postgres</span>, <span className="val">docker</span>.
+        </p>
+        <p>
+          <span className="comment">#</span> Targeting: <span className="key">investment analyst</span> or{' '}
+          <span className="key">algo trading</span> roles.
+        </p>
+      </div>
+    </section>
+  );
+}
 
-        <div className="bento">
-          <div data-reveal className="reveal bento-about-text">
-            <p className="text-lg leading-relaxed mb-4">
-              <span className="text-fg font-medium">Quantitative Researcher & Software Engineer</span> based in Jakarta.
-              I build research infrastructure and trading systems that close the gap between
-              academic finance and shipping production code.
-            </p>
-            <p className="text-fg-mute leading-relaxed mb-4">
-              My work spans market-data backtesters, regime-detection models, Kelly-based position
-              sizing, and event-driven execution frameworks. Outside of finance, I shoot street
-              photography and write about the Indonesian macro environment.
-            </p>
-            <p className="text-fg-mute leading-relaxed">
-              <span className="text-fg font-medium">Targeting</span>: investment analyst or algo trading roles.
-            </p>
-          </div>
-
-          <div data-reveal className="reveal bento-stack">
-            <h3 className="text-xs font-mono text-faint mb-3 uppercase tracking-widest">Stack</h3>
-            <div className="flex flex-wrap gap-2">
-              {['Python', 'pandas', 'numpy', 'statsmodels', 'FastAPI', 'Streamlit', 'Flutter', 'Dart', 'PostgreSQL', 'Parquet', 'TypeScript', 'Next.js', 'Tailwind', 'Docker'].map(s => (
-                <span key={s} className="text-xs px-2.5 py-1 rounded bg-white/5 border border-white/10 text-fg-mute">{s}</span>
-              ))}
+// ============================================================================// WORK (as a project table)
+// ============================================================================
+function Work() {
+  return (
+    <section className="section" id="work">
+      <h2 className="section-title">projects/</h2>
+      <div className="project-list">
+        {PROJECTS.map((p) => (
+          <a
+            key={p.name}
+            href={`https://github.com/JoshRiang/${p.name}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="project-row"
+          >
+            <span className={`project-status ${p.status === 'archived' ? 'archived' : ''}`} />
+            <div>
+              <div className="project-name">{p.name}</div>
+              <div className="project-desc">{p.desc}</div>
             </div>
-          </div>
-
-          <div data-reveal className="reveal bento-quote-2">
-            <Sparkles className="w-4 h-4 text-accent mb-2" />
-            <p className="text-sm text-fg-mute italic leading-relaxed">
-              "I don't believe in magic. I believe in compounding: small reliable systems, iterated
-              daily, that get sharper over time."
-            </p>
-            <p className="text-xs text-faint mt-2">— me, on a slow Tuesday</p>
-          </div>
-        </div>
+            <span className="project-lang">{p.lang}</span>
+            <span className="project-arrow">↗</span>
+          </a>
+        ))}
       </div>
     </section>
   );
@@ -273,94 +210,70 @@ function About() {
 // ============================================================================// TIMELINE
 // ============================================================================
 function Timeline() {
-  const ref = useReveal();
   return (
-    <section id="timeline" ref={ref} className="py-24 border-t border-white/5">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="section-head">
-          <p data-reveal className="reveal eyebrow">— 03</p>
-          <h2 data-reveal className="reveal section-title">Timeline</h2>
-        </div>
-
-        <div className="relative max-w-3xl">
-          <div className="absolute left-[7px] top-0 bottom-0 w-px bg-white/10" />
-          {TIMELINE.map((item, i) => (
-            <div key={i} data-reveal className="reveal relative pl-8 pb-10 last:pb-0">
-              <div className="absolute left-0 top-1.5 w-4 h-4 rounded-full bg-bg border-2 border-accent" />
-              <div className="text-xs font-mono text-accent mb-1">{item.year}</div>
-              <div className="font-semibold mb-1">{item.title}</div>
-              <p className="text-sm text-fg-mute">{item.body}</p>
-            </div>
-          ))}
-        </div>
+    <section className="section" id="timeline">
+      <h2 className="section-title">timeline.log</h2>
+      <div className="timeline">
+        {TIMELINE.map((item, i) => (
+          <div
+            key={i}
+            className="timeline-item"
+            style={{ animationDelay: `${i * 0.1}s` }}
+          >
+            <div className="timeline-year">{item.year}</div>
+            <div className="timeline-title">{item.title}</div>
+            <p className="timeline-body">{item.body}</p>
+          </div>
+        ))}
       </div>
     </section>
   );
 }
 
-// ============================================================================// PHOTOGRAPHY
+// ============================================================================// GALLERY
 // ============================================================================
 function Gallery() {
-  const ref = useReveal();
-  const [photos, setPhotos] = useState<{src: string, title: string, alt: string}[] | null>(null);
-  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const [photos, setPhotos] = useState<{ src: string; title: string; alt: string }[] | null>(null);
+  const [lb, setLb] = useState<number | null>(null);
+
   useEffect(() => {
     fetch('/photos/manifest.json').then(r => r.ok ? r.json() : { photos: [] }).then(d => setPhotos(d.photos || []));
   }, []);
 
   useEffect(() => {
-    if (lightboxIdx === null) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLightboxIdx(null);
-      if (e.key === 'ArrowRight' && photos) setLightboxIdx((lightboxIdx + 1) % photos.length);
-      if (e.key === 'ArrowLeft' && photos) setLightboxIdx((lightboxIdx - 1 + photos.length) % photos.length);
+    if (lb === null || !photos) return;
+    const h = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLb(null);
+      if (e.key === 'ArrowRight') setLb((lb + 1) % photos.length);
+      if (e.key === 'ArrowLeft') setLb((lb - 1 + photos.length) % photos.length);
     };
     document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', handler);
-    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', handler); };
-  }, [lightboxIdx, photos]);
+    window.addEventListener('keydown', h);
+    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', h); };
+  }, [lb, photos]);
 
   return (
-    <section id="gallery" ref={ref} className="py-24 border-t border-white/5">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="section-head">
-          <p data-reveal className="reveal eyebrow">— 04</p>
-          <h2 data-reveal className="reveal section-title">Photography</h2>
-          <p data-reveal className="reveal section-sub">
-            Street, architecture, and quiet moments. Mostly shot on a Fuji X-T30, around Jakarta.
-          </p>
+    <section className="section" id="gallery">
+      <h2 className="section-title">~/photos/</h2>
+      {photos && photos.length > 0 && (
+        <div className="gallery-grid">
+          {photos.map((p, i) => (
+            <button key={p.src} onClick={() => setLb(i)} className="gallery-item">
+              <img src={p.src} alt={p.alt} loading="lazy" />
+              {p.title && <div className="gallery-overlay">{p.title}</div>}
+            </button>
+          ))}
         </div>
-
-        {photos && photos.length > 0 && (
-          <div className="bento bento-photos">
-            {photos.map((p, i) => (
-              <button
-                key={p.src}
-                onClick={() => setLightboxIdx(i)}
-                data-reveal
-                className={`reveal bento-photo ${i === 0 ? 'bento-photo-feature' : ''}`}
-              >
-                <img src={p.src} alt={p.alt} loading="lazy" />
-                {p.title && <div className="photo-title">{p.title}</div>}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {lightboxIdx !== null && photos && (
-          <div className="lightbox" onClick={() => setLightboxIdx(null)}>
-            <button className="lightbox-btn lightbox-prev" onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx - 1 + photos.length) % photos.length); }} aria-label="Previous">
-              <ArrowRight className="w-5 h-5 rotate-180" />
-            </button>
-            <img src={photos[lightboxIdx].src} alt={photos[lightboxIdx].alt} className="lightbox-img" onClick={(e) => e.stopPropagation()} />
-            <button className="lightbox-btn lightbox-next" onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx + 1) % photos.length); }} aria-label="Next">
-              <ArrowRight className="w-5 h-5" />
-            </button>
-            <div className="lightbox-counter">{lightboxIdx + 1} / {photos.length}</div>
-            <div className="lightbox-caption">{photos[lightboxIdx].title}</div>
-          </div>
-        )}
-      </div>
+      )}
+      {lb !== null && photos && (
+        <div className="lightbox" onClick={() => setLb(null)}>
+          <button className="lightbox-btn lightbox-prev" onClick={(e) => { e.stopPropagation(); setLb((lb - 1 + photos.length) % photos.length); }}>‹</button>
+          <img src={photos[lb].src} alt={photos[lb].alt} className="lightbox-img" onClick={(e) => e.stopPropagation()} />
+          <button className="lightbox-btn lightbox-next" onClick={(e) => { e.stopPropagation(); setLb((lb + 1) % photos.length); }}>›</button>
+          <div className="lightbox-counter">{lb + 1} / {photos.length}</div>
+          {photos[lb].title && <div className="lightbox-caption">{photos[lb].title}</div>}
+        </div>
+      )}
     </section>
   );
 }
@@ -369,50 +282,29 @@ function Gallery() {
 // ============================================================================
 function Contact() {
   return (
-    <section id="contact" className="py-24 border-t border-white/5">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="section-head">
-          <p className="eyebrow">— 05</p>
-          <h2 className="section-title">Let's work together</h2>
-          <p className="section-sub">
-            Open to internships, full-time roles, and interesting collaborations.
-          </p>
-        </div>
-
-        <div className="bento bento-contact">
-          <a href="mailto:joshuariangkamang@gmail.com" className="contact-card contact-primary">
-            <Mail className="w-5 h-5" />
-            <div>
-              <div className="contact-label">Email</div>
-              <div className="contact-value">joshuariangkamang@gmail.com</div>
-            </div>
-            <ArrowUpRight className="contact-arrow" />
-          </a>
-          <a href="https://github.com/JoshRiang" target="_blank" rel="noopener noreferrer" className="contact-card">
-            <Github className="w-5 h-5" />
-            <div>
-              <div className="contact-label">GitHub</div>
-              <div className="contact-value">github.com/JoshRiang</div>
-            </div>
-            <ArrowUpRight className="contact-arrow" />
-          </a>
-          <a href="https://linkedin.com/in/joshua-riangkamang" target="_blank" rel="noopener noreferrer" className="contact-card">
-            <Linkedin className="w-5 h-5" />
-            <div>
-              <div className="contact-label">LinkedIn</div>
-              <div className="contact-value">joshua-riangkamang</div>
-            </div>
-            <ArrowUpRight className="contact-arrow" />
-          </a>
-          <a href="https://t.me/JoshRiang" target="_blank" rel="noopener noreferrer" className="contact-card">
-            <Send className="w-5 h-5" />
-            <div>
-              <div className="contact-label">Telegram</div>
-              <div className="contact-value">@JoshRiang</div>
-            </div>
-            <ArrowUpRight className="contact-arrow" />
-          </a>
-        </div>
+    <section className="section" id="contact">
+      <h2 className="section-title">contact.sh</h2>
+      <div className="contact-list">
+        <a href="mailto:joshuariangkamang@gmail.com" className="contact-row">
+          <span className="contact-key">email</span>
+          <span className="contact-value">joshuariangkamang@gmail.com</span>
+          <span className="contact-arrow">↗</span>
+        </a>
+        <a href="https://github.com/JoshRiang" target="_blank" rel="noopener noreferrer" className="contact-row">
+          <span className="contact-key">github</span>
+          <span className="contact-value">github.com/JoshRiang</span>
+          <span className="contact-arrow">↗</span>
+        </a>
+        <a href="https://linkedin.com/in/joshua-riangkamang" target="_blank" rel="noopener noreferrer" className="contact-row">
+          <span className="contact-key">linkedin</span>
+          <span className="contact-value">joshua-riangkamang</span>
+          <span className="contact-arrow">↗</span>
+        </a>
+        <a href="https://t.me/JoshRiang" target="_blank" rel="noopener noreferrer" className="contact-row">
+          <span className="contact-key">telegram</span>
+          <span className="contact-value">@JoshRiang</span>
+          <span className="contact-arrow">↗</span>
+        </a>
       </div>
     </section>
   );
@@ -423,9 +315,12 @@ function Contact() {
 function Footer() {
   return (
     <footer className="footer">
-      <div className="max-w-6xl mx-auto px-6">
-        <p>© 2026 Joshua Riangkamang. Built with discipline, deployed to the world.</p>
-      </div>
+      <p>
+        <span className="comment">$</span> <span className="fn">echo</span> <span className="string">&quot;built with discipline. deployed to the world. © 2026.&quot;</span>
+      </p>
+      <p>
+        <span className="comment"># uptime: 99.9% · last deploy: {new Date().toISOString().split(&quot;T&quot;)[0]}</span>
+      </p>
     </footer>
   );
 }
@@ -434,10 +329,12 @@ function Footer() {
 // ============================================================================
 export default function Home() {
   return (
-    <main>
+    <main className="terminal">
       <Header />
-      <Intro />
+      <Hero />
+      <Stats />
       <About />
+      <Work />
       <Timeline />
       <Gallery />
       <Contact />
