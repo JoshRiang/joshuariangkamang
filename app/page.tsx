@@ -313,13 +313,14 @@ function Contact() {
 // ============================================================================// FOOTER
 // ============================================================================
 function Footer() {
+  const today = new Date().toISOString().split('T')[0];
   return (
     <footer className="footer">
       <p>
         <span className="comment">$</span> <span className="fn">echo</span> <span className="string">&quot;built with discipline. deployed to the world. © 2026.&quot;</span>
       </p>
       <p>
-        <span className="comment"># uptime: 99.9% · last deploy: {new Date().toISOString().split(&quot;T&quot;)[0]}</span>
+        <span className="comment"># uptime: 99.9% · last deploy: {today}</span>
       </p>
     </footer>
   );
