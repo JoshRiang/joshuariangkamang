@@ -1,24 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const PROJECTS = [
-  { name: 'quant-research-platform', desc: 'Flagship: strategy plugins, walk-forward backtest, paper trading, FastAPI, Streamlit, Docker.', lang: 'Python' },
-  { name: 'strategy-dsl', desc: 'Custom DSL with recursive-descent parser and compiler. Strategies as plain text.', lang: 'Python' },
-  { name: 'trading-bot', desc: 'Broker-agnostic execution engine with order state machine, kill switch, structlog JSON events.', lang: 'Python' },
-  { name: 'market-data-store', desc: 'Parquet time-series store partitioned by ticker/year, with deterministic replay engine.', lang: 'Python' },
-  { name: 'factor-research', desc: 'Momentum, value, quality, low-vol factor backtests with decile spreads and Spearman IC.', lang: 'Python' },
-  { name: 'regime-detector', desc: '3-state Gaussian HMM + GARCH(1,1) for volatility regime classification and forecasting.', lang: 'Python' },
-  { name: 'pairs-trader', desc: 'Engle-Granger cointegration, half-life mean reversion, z-score backtester.', lang: 'Python' },
-  { name: 'portfolio-risk-dashboard', desc: 'FastAPI service for VaR, CVaR, correlation, sector exposure, and stress scenarios.', lang: 'Python' },
-  { name: 'kelly-sizer', desc: 'Position sizing from edge + vol. Full Kelly, fractional Kelly, vol targeting.', lang: 'Python' },
-  { name: 'backtest-harness', desc: 'Walk-forward backtest engine with Sharpe, Sortino, Calmar, drawdown, parameter sweep.', lang: 'Python' },
+  { name: 'quant-research-platform', desc: 'Flagship: strategy plugins, walk-forward backtest, paper trading, FastAPI, Streamlit, Docker.', tag: 'Platform' },
+  { name: 'strategy-dsl', desc: 'Custom DSL with parser and compiler. Strategies as plain text files.', tag: 'Quant' },
+  { name: 'trading-bot', desc: 'Broker-agnostic execution engine with order state machine and kill switch.', tag: 'Execution' },
+  { name: 'market-data-store', desc: 'Parquet time-series store with deterministic replay engine.', tag: 'Data' },
+  { name: 'factor-research', desc: 'Momentum, value, quality, low-vol factor backtests with decile spreads and Spearman IC.', tag: 'Research' },
+  { name: 'regime-detector', desc: '3-state Gaussian HMM + GARCH(1,1) for volatility regime classification and forecasting.', tag: 'ML' },
+  { name: 'pairs-trader', desc: 'Cointegration, half-life, z-score backtester for statistical arbitrage pairs.', tag: 'Stat-Arb' },
+  { name: 'portfolio-risk-dashboard', desc: 'FastAPI for VaR, CVaR, correlation, sector exposure, and stress scenarios.', tag: 'Risk' },
+  { name: 'kelly-sizer', desc: 'Position sizing from edge and volatility. Full Kelly, fractional Kelly, vol targeting.', tag: 'Risk' },
+  { name: 'backtest-harness', desc: 'Walk-forward backtest engine with Sharpe, Sortino, Calmar, drawdown, parameter sweep.', tag: 'Quant' },
 ];
 
 const EXPERIENCE = [
-  { role: 'Intern', company: 'Astra Sedaya Finance', date: '2025 — present', desc: 'Built monitoring platform, automated ~70% of manual work, and contributed to internal strategy/QA workflows. Starship Batch 23.' },
-  { role: 'Independent quant', company: 'Self', date: '2025 — present', desc: 'Built Kelly+Vol risk engine for a live Pluang portfolio (NVDA/AVGO/TSM/GLD). Nightly walk-forward reports, regime detection, and factor research.' },
+  { role: 'Intern', company: 'Astra Sedaya Finance (ACC)', date: '2025 — present', desc: 'Built monitoring platform, automated ~70% of manual work, contributed to strategy/QA workflows. Starship Batch 23.' },
+  { role: 'Independent quant', company: 'Self', date: '2025 — present', desc: 'Built Kelly+Vol risk engine for a live Pluang portfolio (NVDA/AVGO/TSM/GLD). Nightly walk-forward reports, regime detection, factor research.' },
 ];
+
+const STACK = ['Python', 'pandas', 'FastAPI', 'Streamlit', 'Flutter', 'Next.js', 'TypeScript', 'PostgreSQL', 'Parquet', 'Docker', 'Linux', 'Git'];
 
 function Nav() {
   return (
@@ -28,7 +30,7 @@ function Nav() {
         <div className="nav-links">
           <a href="#projects">Projects</a>
           <a href="#experience">Experience</a>
-          <a href="#gallery">Photos</a>
+          <a href="#photos">Photos</a>
           <a href="#contact">Contact</a>
         </div>
       </div>
@@ -36,37 +38,67 @@ function Nav() {
   );
 }
 
-function Header() {
+function Hero() {
   return (
-    <header id="top" className="intro">
-      <p className="eyebrow">Joshua Riangkamang</p>
-      <h1>Joshua Riangkamang</h1>
-      <p className="role">Quantitative researcher and software engineer · Jakarta, Indonesia</p>
-      <p className="lede">
-        I build research infrastructure and trading systems that close the gap between
-        academic finance and shipping production code. Currently interning at Astra Sedaya
-        Finance and targeting investment analyst or algo trading roles.
+    <section className="hero" id="top">
+      <p className="hero-eyebrow">Hi, I'm Joshua</p>
+      <h1 className="hero-title">I build tools for<br />systematic traders.</h1>
+      <p className="hero-subtitle">
+        Quantitative researcher and software engineer. Interning at Astra Sedaya Finance.
+        Targeting investment analyst or algo trading roles.
       </p>
-    </header>
+      <div className="hero-cta">
+        <a href="#projects" className="btn btn-primary">See my work</a>
+        <a href="#contact" className="btn btn-secondary">Get in touch</a>
+      </div>
+    </section>
   );
 }
 
-function Stack() {
+function Stats() {
   return (
-    <section>
-      <h2>Stack</h2>
-      <div className="stack">
-        <span>Python</span>
-        <span>pandas</span>
-        <span>numpy</span>
-        <span>FastAPI</span>
-        <span>Streamlit</span>
-        <span>Flutter</span>
-        <span>Next.js</span>
-        <span>TypeScript</span>
-        <span>PostgreSQL</span>
-        <span>Parquet</span>
-        <span>Docker</span>
+    <section className="stats">
+      <div>
+        <div className="stat-num">10</div>
+        <div className="stat-label">Open-source projects</div>
+      </div>
+      <div>
+        <div className="stat-num">150+</div>
+        <div className="stat-label">Tests passing</div>
+      </div>
+      <div>
+        <div className="stat-num">3</div>
+        <div className="stat-label">Internships</div>
+      </div>
+    </section>
+  );
+}
+
+function Projects() {
+  return (
+    <section className="section" id="projects">
+      <p className="section-eyebrow">Projects</p>
+      <h2 className="section-title">Built in public, tested in code.</h2>
+      <p className="section-sub">
+        Ten open-source projects spanning backtesting, risk management, and execution
+        infrastructure. Each one ships with tests, docs, and a real use case.
+      </p>
+
+      <div className="projects-grid">
+        {PROJECTS.map((p, i) => (
+          <a
+            key={p.name}
+            href={`https://github.com/JoshRiang/${p.name}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`project-card ${i === 0 ? 'project-card-feature' : ''}`}
+          >
+            <span className="project-tag">{p.tag}</span>
+            <div className="project-name">{p.name}</div>
+            <p className="project-desc">{p.desc}</p>
+            <span className="project-link">View on GitHub →</span>
+          </a>
+        ))}
       </div>
     </section>
   );
@@ -74,38 +106,22 @@ function Stack() {
 
 function Experience() {
   return (
-    <section id="experience">
-      <h2>Experience</h2>
-      {EXPERIENCE.map((e, i) => (
-        <div key={i} className="exp-item">
-          <h3 className="exp-role">
-            <span>{e.role}</span> · <span className="exp-company">{e.company}</span>
-          </h3>
-          <div className="exp-date">{e.date}</div>
-          <p className="exp-desc">{e.desc}</p>
-        </div>
-      ))}
-    </section>
-  );
-}
-
-function Projects() {
-  return (
-    <section id="projects">
-      <h2>Projects</h2>
-      <p>Ten open-source projects on GitHub. All shipped with tests, docs, and a real use case.</p>
-      <ul className="projects">
-        {PROJECTS.map((p) => (
-          <li key={p.name} className="project">
-            <a href={`https://github.com/JoshRiang/${p.name}`} target="_blank" rel="noopener noreferrer">
-              <span className="project-name">{p.name}</span>
-              <span style={{ color: 'var(--fg-faint)' }}>↗</span>
-            </a>
-            <p className="project-desc">{p.desc}</p>
-            <div className="project-meta">{p.lang}</div>
-          </li>
+    <section className="section" id="experience">
+      <p className="section-eyebrow">Experience</p>
+      <h2 className="section-title">Where I've worked.</h2>
+      <div className="exp-list">
+        {EXPERIENCE.map((e, i) => (
+          <div key={i} className="exp-item">
+            <div className="exp-date">{e.date}</div>
+            <div>
+              <div className="exp-role">
+                {e.role} <span className="exp-company">· {e.company}</span>
+              </div>
+              <p className="exp-desc">{e.desc}</p>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </section>
   );
 }
@@ -131,9 +147,12 @@ function Gallery() {
   }, [lb, photos]);
 
   return (
-    <section id="gallery">
-      <h2>Photos</h2>
-      <p>Street, architecture, and quiet moments. Mostly shot on a Fuji X-T30, around Jakarta.</p>
+    <section className="section" id="photos">
+      <p className="section-eyebrow">Photos</p>
+      <h2 className="section-title">Moments in between.</h2>
+      <p className="section-sub">
+        Street, architecture, and quiet moments. Mostly shot on a Fuji X-T30, around Jakarta.
+      </p>
       {photos && photos.length > 0 && (
         <div className="gallery">
           {photos.map((p, i) => (
@@ -143,7 +162,6 @@ function Gallery() {
               alt={p.alt}
               loading="lazy"
               onClick={() => setLb(i)}
-              style={{ cursor: 'pointer' }}
             />
           ))}
         </div>
@@ -162,24 +180,30 @@ function Gallery() {
 
 function Contact() {
   return (
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Open to internships, full-time roles, and interesting collaborations.</p>
-      <ul className="contact-list">
-        <li><span className="key">Email</span><a href="mailto:joshuariangkamang@gmail.com">joshuariangkamang@gmail.com</a></li>
-        <li><span className="key">GitHub</span><a href="https://github.com/JoshRiang" target="_blank" rel="noopener noreferrer">github.com/JoshRiang ↗</a></li>
-        <li><span className="key">LinkedIn</span><a href="https://linkedin.com/in/joshua-riangkamang" target="_blank" rel="noopener noreferrer">joshua-riangkamang ↗</a></li>
-        <li><span className="key">Telegram</span><a href="https://t.me/JoshRiang" target="_blank" rel="noopener noreferrer">@JoshRiang ↗</a></li>
-      </ul>
+    <section className="contact" id="contact">
+      <p className="section-eyebrow">Contact</p>
+      <h2 className="section-title">Let's talk.</h2>
+      <p className="section-sub" style={{ margin: '0 auto 0' }}>
+        Open to internships, full-time roles, and interesting collaborations.
+      </p>
+      <div className="contact-cta">
+        <a href="mailto:joshuariangkamang@gmail.com" className="btn btn-primary">Send an email</a>
+        <a href="https://github.com/JoshRiang" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">View GitHub</a>
+      </div>
+      <div className="contact-secondary">
+        <a href="https://linkedin.com/in/joshua-riangkamang" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://t.me/JoshRiang" target="_blank" rel="noopener noreferrer">Telegram</a>
+        <span style={{ color: 'var(--fg-faint)' }}>joshuariangkamang@gmail.com</span>
+      </div>
     </section>
   );
 }
 
 function Footer() {
   return (
-    <footer>
+    <footer className="footer">
       <span>© 2026 Joshua Riangkamang</span>
-      <span>Built with Next.js · Tailscale 100.89.180.23</span>
+      <span>Designed like Apple's website, but built by hand.</span>
     </footer>
   );
 }
@@ -188,8 +212,8 @@ export default function Home() {
   return (
     <main>
       <Nav />
-      <Header />
-      <Stack />
+      <Hero />
+      <Stats />
       <Projects />
       <Experience />
       <Gallery />
