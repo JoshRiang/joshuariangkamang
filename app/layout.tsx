@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'sw
 const jetbrains = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
 
 export const metadata: Metadata = {
-  title: 'Joshua Riangkamang — Quantitative Researcher & Engineer',
+  title: 'Joshua Riangkamang — Quantitative Researcher & Software Engineer',
   description:
     'Personal portfolio of Joshua Riangkamang. Quantitative finance, trading systems, software engineering, and photography.',
   openGraph: {
