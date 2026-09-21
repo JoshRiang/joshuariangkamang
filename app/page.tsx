@@ -1,224 +1,268 @@
-'use client';
+import type { Metadata } from 'next';
 
-import { useEffect, useRef, useState } from 'react';
+export const metadata: Metadata = {
+  title: 'Joshua Riangkamang — quant researcher & software engineer',
+  description:
+    'Student in Indonesia building open-source tools for systematic trading: backtest engines, position sizing, market-data infrastructure.',
+};
 
-const PROJECTS = [
-  { name: 'quant-research-platform', desc: 'Flagship: strategy plugins, walk-forward backtest, paper trading, FastAPI, Streamlit, Docker.', tag: 'Platform' },
-  { name: 'strategy-dsl', desc: 'Custom DSL with parser and compiler. Strategies as plain text files.', tag: 'Quant' },
-  { name: 'trading-bot', desc: 'Broker-agnostic execution engine with order state machine and kill switch.', tag: 'Execution' },
-  { name: 'market-data-store', desc: 'Parquet time-series store with deterministic replay engine.', tag: 'Data' },
-  { name: 'factor-research', desc: 'Momentum, value, quality, low-vol factor backtests with decile spreads and Spearman IC.', tag: 'Research' },
-  { name: 'regime-detector', desc: '3-state Gaussian HMM + GARCH(1,1) for volatility regime classification and forecasting.', tag: 'ML' },
-  { name: 'pairs-trader', desc: 'Cointegration, half-life, z-score backtester for statistical arbitrage pairs.', tag: 'Stat-Arb' },
-  { name: 'portfolio-risk-dashboard', desc: 'FastAPI for VaR, CVaR, correlation, sector exposure, and stress scenarios.', tag: 'Risk' },
-  { name: 'kelly-sizer', desc: 'Position sizing from edge and volatility. Full Kelly, fractional Kelly, vol targeting.', tag: 'Risk' },
-  { name: 'backtest-harness', desc: 'Walk-forward backtest engine with Sharpe, Sortino, Calmar, drawdown, parameter sweep.', tag: 'Quant' },
+const WORK = [
+  {
+    name: 'quant-research-platform',
+    desc: 'Strategy plugins, walk-forward backtests, paper trading. FastAPI + Streamlit, shipped in Docker.',
+    meta: 'Python · 2026',
+  },
+  {
+    name: 'backtest-harness',
+    desc: 'Walk-forward engine reporting Sharpe, Sortino, Calmar and max drawdown, with parameter sweeps.',
+    meta: 'Python · 2026',
+  },
+  {
+    name: 'factor-research',
+    desc: 'Momentum / value / quality / low-vol decile backtests with Spearman IC on a 50-ticker US universe.',
+    meta: 'Python · 2026',
+  },
+  {
+    name: 'kelly-sizer',
+    desc: 'Full and fractional Kelly with volatility targeting — sizing from edge instead of gut feel.',
+    meta: 'Python · 2026',
+  },
+  {
+    name: 'regime-detector',
+    desc: '3-state Gaussian HMM plus GARCH(1,1) to classify and forecast low / mid / high volatility regimes.',
+    meta: 'Python · 2026',
+  },
+  {
+    name: 'market-data-store',
+    desc: 'Parquet time-series store with a deterministic replay engine so backtests rerun bit-for-bit.',
+    meta: 'Python · 2026',
+  },
+  {
+    name: 'strategy-dsl',
+    desc: 'Small language for writing strategies as text files — own parser and compiler, no YAML soup.',
+    meta: 'Python · 2026',
+  },
+  {
+    name: 'portfolio-risk-dashboard',
+    desc: 'VaR, CVaR, correlation, sector exposure and stress scenarios behind a FastAPI service.',
+    meta: 'Python · 2026',
+  },
 ];
 
-const EXPERIENCE = [
-  { role: 'Intern', company: 'Astra Sedaya Finance (ACC)', date: '2025 — present', desc: 'Built monitoring platform, automated ~70% of manual work, contributed to strategy/QA workflows. Starship Batch 23.' },
-  { role: 'Independent quant', company: 'Self', date: '2025 — present', desc: 'Built Kelly+Vol risk engine for a live Pluang portfolio (NVDA/AVGO/TSM/GLD). Nightly walk-forward reports, regime detection, factor research.' },
+const PHOTOS = [
+  { src: 'photos/img_b88fd0d5655e.jpg', title: 'Three boys, golden hour', note: 'Jakarta street' },
+  { src: 'photos/img_d29ca888a1f9.jpg', title: 'Satellite birds', note: 'Starlink dish, dusk' },
+  { src: 'photos/img_fceafc429c12.jpg', title: 'White cat', note: 'Close-up' },
+  { src: 'photos/img_94d7faecb1d1.jpg', title: 'Puffed up', note: 'Sparrow at dusk' },
 ];
-
-const STACK = ['Python', 'pandas', 'FastAPI', 'Streamlit', 'Flutter', 'Next.js', 'TypeScript', 'PostgreSQL', 'Parquet', 'Docker', 'Linux', 'Git'];
-
-function Nav() {
-  return (
-    <nav className="nav">
-      <div className="nav-inner">
-        <a href="#top" className="nav-name">Joshua Riangkamang</a>
-        <div className="nav-links">
-          <a href="#projects">Projects</a>
-          <a href="#experience">Experience</a>
-          <a href="#photos">Photos</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </div>
-    </nav>
-  );
-}
-
-function Hero() {
-  return (
-    <section className="hero" id="top">
-      <p className="hero-eyebrow">Hi, I'm Joshua</p>
-      <h1 className="hero-title">I build tools for<br />systematic traders.</h1>
-      <p className="hero-subtitle">
-        Quantitative researcher and software engineer. Interning at Astra Sedaya Finance.
-        Targeting investment analyst or algo trading roles.
-      </p>
-      <div className="hero-cta">
-        <a href="#projects" className="btn btn-primary">See my work</a>
-        <a href="#contact" className="btn btn-secondary">Get in touch</a>
-      </div>
-    </section>
-  );
-}
-
-function Stats() {
-  return (
-    <section className="stats">
-      <div>
-        <div className="stat-num">10</div>
-        <div className="stat-label">Open-source projects</div>
-      </div>
-      <div>
-        <div className="stat-num">150+</div>
-        <div className="stat-label">Tests passing</div>
-      </div>
-      <div>
-        <div className="stat-num">3</div>
-        <div className="stat-label">Internships</div>
-      </div>
-    </section>
-  );
-}
-
-function Projects() {
-  return (
-    <section className="section" id="projects">
-      <p className="section-eyebrow">Projects</p>
-      <h2 className="section-title">Built in public, tested in code.</h2>
-      <p className="section-sub">
-        Ten open-source projects spanning backtesting, risk management, and execution
-        infrastructure. Each one ships with tests, docs, and a real use case.
-      </p>
-
-      <div className="projects-grid">
-        {PROJECTS.map((p, i) => (
-          <a
-            key={p.name}
-            href={`https://github.com/JoshRiang/${p.name}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`project-card ${i === 0 ? 'project-card-feature' : ''}`}
-          >
-            <span className="project-tag">{p.tag}</span>
-            <div className="project-name">{p.name}</div>
-            <p className="project-desc">{p.desc}</p>
-            <span className="project-link">View on GitHub →</span>
-          </a>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function Experience() {
-  return (
-    <section className="section" id="experience">
-      <p className="section-eyebrow">Experience</p>
-      <h2 className="section-title">Where I've worked.</h2>
-      <div className="exp-list">
-        {EXPERIENCE.map((e, i) => (
-          <div key={i} className="exp-item">
-            <div className="exp-date">{e.date}</div>
-            <div>
-              <div className="exp-role">
-                {e.role} <span className="exp-company">· {e.company}</span>
-              </div>
-              <p className="exp-desc">{e.desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function Gallery() {
-  const [photos, setPhotos] = useState<{ src: string; title: string; alt: string }[] | null>(null);
-  const [lb, setLb] = useState<number | null>(null);
-
-  useEffect(() => {
-    fetch('/photos/manifest.json').then(r => r.ok ? r.json() : { photos: [] }).then(d => setPhotos(d.photos || []));
-  }, []);
-
-  useEffect(() => {
-    if (lb === null || !photos) return;
-    const h = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLb(null);
-      if (e.key === 'ArrowRight') setLb((lb + 1) % photos.length);
-      if (e.key === 'ArrowLeft') setLb((lb - 1 + photos.length) % photos.length);
-    };
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', h);
-    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', h); };
-  }, [lb, photos]);
-
-  return (
-    <section className="section" id="photos">
-      <p className="section-eyebrow">Photos</p>
-      <h2 className="section-title">Moments in between.</h2>
-      <p className="section-sub">
-        Street, architecture, and quiet moments. Mostly shot on a Fuji X-T30, around Jakarta.
-      </p>
-      {photos && photos.length > 0 && (
-        <div className="gallery">
-          {photos.map((p, i) => (
-            <img
-              key={p.src}
-              src={p.src}
-              alt={p.alt}
-              loading="lazy"
-              onClick={() => setLb(i)}
-            />
-          ))}
-        </div>
-      )}
-      {lb !== null && photos && (
-        <div className="lightbox" onClick={() => setLb(null)}>
-          <button className="lightbox-btn lightbox-prev" onClick={(e) => { e.stopPropagation(); setLb((lb - 1 + photos.length) % photos.length); }}>‹</button>
-          <img src={photos[lb].src} alt={photos[lb].alt} onClick={(e) => e.stopPropagation()} />
-          <button className="lightbox-btn lightbox-next" onClick={(e) => { e.stopPropagation(); setLb((lb + 1) % photos.length); }}>›</button>
-          {photos[lb].title && <div className="lightbox-caption">{photos[lb].title}</div>}
-        </div>
-      )}
-    </section>
-  );
-}
-
-function Contact() {
-  return (
-    <section className="contact" id="contact">
-      <p className="section-eyebrow">Contact</p>
-      <h2 className="section-title">Let's talk.</h2>
-      <p className="section-sub" style={{ margin: '0 auto 0' }}>
-        Open to internships, full-time roles, and interesting collaborations.
-      </p>
-      <div className="contact-cta">
-        <a href="mailto:joshuariangkamang@gmail.com" className="btn btn-primary">Send an email</a>
-        <a href="https://github.com/JoshRiang" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">View GitHub</a>
-      </div>
-      <div className="contact-secondary">
-        <a href="https://linkedin.com/in/joshua-riangkamang" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="https://t.me/JoshRiang" target="_blank" rel="noopener noreferrer">Telegram</a>
-        <span style={{ color: 'var(--fg-faint)' }}>joshuariangkamang@gmail.com</span>
-      </div>
-    </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="footer">
-      <span>© 2026 Joshua Riangkamang</span>
-      <span>Designed like Apple's website, but built by hand.</span>
-    </footer>
-  );
-}
 
 export default function Home() {
   return (
-    <main>
-      <Nav />
-      <Hero />
-      <Stats />
-      <Projects />
-      <Experience />
-      <Gallery />
-      <Contact />
-      <Footer />
-    </main>
+    <>
+      <header className="topbar">
+        <div className="topbar-inner">
+          <a className="mark" href="#top">joshriang</a>
+          <nav>
+            <a href="#work">work</a>
+            <a href="#experience">experience</a>
+            <a href="#photos">photos</a>
+            <a href="#contact">contact</a>
+          </nav>
+        </div>
+      </header>
+
+      <main className="wrap" id="top">
+        {/* ---------- hero ---------- */}
+        <section className="hero">
+          <div>
+            <p className="kicker">
+              Jakarta, Indonesia<span className="dot">·</span>UTC+7
+            </p>
+            <h1>
+              Joshua Riangkamang builds <em>backtesting &amp; risk tooling</em> for
+              systematic traders.
+            </h1>
+            <p className="lede">
+              I&apos;m a student in Indonesia and an intern at{' '}
+              <a href="https://www.acc.co.id" target="_blank" rel="noopener noreferrer">
+                Astra Sedaya Finance
+              </a>
+              . I write open-source quant infrastructure in Python — walk-forward
+              engines, position sizers, a Parquet market-data store — each with
+              tests and docs, all on{' '}
+              <a href="https://github.com/JoshRiang" target="_blank" rel="noopener noreferrer">
+                GitHub
+              </a>
+              .
+            </p>
+            <p className="lede">
+              Currently looking for investment-analyst or junior algo-trading roles.
+              Previously ran nightly walk-forward reports on a live NVDA / AVGO /
+              TSM / GLD book.
+            </p>
+            <div className="hero-meta">
+              <a href="mailto:joshuariangkamang@gmail.com">joshuariangkamang@gmail.com</a>
+              <a href="https://github.com/JoshRiang" target="_blank" rel="noopener noreferrer">github</a>
+              <a href="https://linkedin.com/in/joshua-riangkamang" target="_blank" rel="noopener noreferrer">linkedin</a>
+            </div>
+          </div>
+          <figure className="portrait">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="img/portrait.jpg" alt="Portrait of Joshua Riangkamang" />
+            <figcaption>Josh, 2026. Fuji X-T30, probably.</figcaption>
+          </figure>
+        </section>
+
+        {/* ---------- work ---------- */}
+        <section className="section" id="work">
+          <div className="section-head">
+            <span className="section-num">01</span>
+            <span className="section-label">Selected work</span>
+          </div>
+          <p className="section-note">
+            Eight repos I&apos;d defend in an interview. Everything is tested,
+            documented, and MIT-licensed — links go straight to the code.
+          </p>
+          <ol className="worklist">
+            {WORK.map((w, i) => (
+              <li key={w.name}>
+                <a
+                  href={`https://github.com/JoshRiang/${w.name}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className="w-idx">{String(i + 1).padStart(2, '0')}</span>
+                  <span>
+                    <span className="w-name">{w.name}</span>
+                    <span className="w-desc">{w.desc}</span>
+                  </span>
+                  <span className="w-meta">
+                    {w.meta} <span className="w-arrow">↗</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {/* ---------- experience ---------- */}
+        <section className="section" id="experience">
+          <div className="section-head">
+            <span className="section-num">02</span>
+            <span className="section-label">Experience</span>
+          </div>
+          <ul className="jobs">
+            <li>
+              <span className="job-date">2025 — now</span>
+              <div>
+                <div className="job-role">
+                  Intern <span className="job-co">· Astra Sedaya Finance (ACC), Starship Batch 23</span>
+                </div>
+                <p className="job-desc">
+                  Built an internal monitoring platform that automated roughly 70%
+                  of a manual workflow, and contributed to strategy and QA
+                  workflows on the team.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span className="job-date">2025 — now</span>
+              <div>
+                <div className="job-role">
+                  Independent quant <span className="job-co">· self-directed</span>
+                </div>
+                <p className="job-desc">
+                  Kelly + volatility-targeted risk engine on a live Pluang
+                  portfolio (NVDA / AVGO / TSM / GLD). Nightly walk-forward
+                  reports, regime detection, factor research — the repos above.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        {/* ---------- about ---------- */}
+        <section className="section" id="about">
+          <div className="section-head">
+            <span className="section-num">03</span>
+            <span className="section-label">About</span>
+          </div>
+          <div className="about-text">
+            <p>
+              I got into markets through code, not finance classes: first a
+              trading bot with a kill switch, then the uncomfortable question of
+              whether any of it actually worked. That led to the backtest
+              harness, the Kelly sizer, and everything downstream. I&apos;m
+              skeptical of backtests by default — including my own — which is
+              why the replay engine is deterministic and the reports run
+              walk-forward.
+            </p>
+            <p>
+              Outside quant work I&apos;ve shipped a Flutter emergency-response
+              app and an offline on-device AI demo for Android. I also shoot
+              street photography around Jakarta on a Fuji X-T30 — a few frames
+              below.
+            </p>
+          </div>
+          <div className="stackline">
+            <strong>Stack:</strong> Python · pandas · FastAPI · Streamlit ·
+            Parquet · PostgreSQL · Docker · TypeScript / Next.js · Flutter ·
+            Linux · Git
+          </div>
+        </section>
+
+        {/* ---------- photos ---------- */}
+        <section className="section" id="photos">
+          <div className="section-head">
+            <span className="section-num">04</span>
+            <span className="section-label">Photos</span>
+          </div>
+          <p className="section-note">
+            Street, birds, and quiet moments. Full set on request — these four
+            are the keepers.
+          </p>
+          <div className="photogrid">
+            {PHOTOS.map((p) => (
+              <figure key={p.src}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.src} alt={p.title} loading="lazy" />
+                <figcaption>
+                  <span>{p.title}</span>
+                  <span>{p.note}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
+        {/* ---------- contact ---------- */}
+        <section className="section" id="contact">
+          <div className="section-head">
+            <span className="section-num">05</span>
+            <span className="section-label">Contact</span>
+          </div>
+          <div className="contact-box">
+            <p>
+              Open to internships, junior analyst roles, and collaborations on
+              open-source trading infrastructure. The fastest way to reach me is
+              email — I reply within a day or two.
+            </p>
+            <a className="email-big" href="mailto:joshuariangkamang@gmail.com">
+              joshuariangkamang@gmail.com
+            </a>
+            <div className="contact-links">
+              <a href="https://github.com/JoshRiang" target="_blank" rel="noopener noreferrer">github ↗</a>
+              <a href="https://linkedin.com/in/joshua-riangkamang" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
+              <a href="https://t.me/JoshRiang" target="_blank" rel="noopener noreferrer">telegram ↗</a>
+            </div>
+          </div>
+        </section>
+
+        <footer className="footer">
+          <span>© 2026 Joshua Riangkamang</span>
+          <span>Set in Palatino &amp; system sans. No trackers, no cookies.</span>
+        </footer>
+      </main>
+    </>
   );
 }
