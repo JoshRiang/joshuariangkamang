@@ -1,52 +1,66 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Joshua Riangkamang — quant researcher & software engineer',
+  title: 'Joshua Riangkamang — software engineer',
   description:
-    'Student in Indonesia building open-source tools for systematic trading: backtest engines, position sizing, market-data infrastructure.',
+    'Engineering undergrad in Indonesia building open-source software: quant research tools, on-device AI, mobile apps, and hardware hacks.',
 };
 
+/* Featured index: one strong pick per area, not one area. */
 const WORK = [
   {
     name: 'quant-research-platform',
-    desc: 'Strategy plugins, walk-forward backtests, paper trading. FastAPI + Streamlit, shipped in Docker.',
+    desc: 'End-to-end backtest, paper-trade and dashboard platform. FastAPI + Streamlit, shipped in Docker.',
     meta: 'Python · 2026',
   },
   {
-    name: 'backtest-harness',
-    desc: 'Walk-forward engine reporting Sharpe, Sortino, Calmar and max drawdown, with parameter sweeps.',
+    name: 'offline-android-ai',
+    desc: 'Chat with small language models fully on-device. Downloads once, then works with no connection.',
+    meta: 'Kotlin · 2026',
+  },
+  {
+    name: 'emergency-community-response-911',
+    desc: 'One-tap SOS, incident reports and geospatial alerts on offline maps. Built with a team for a software-engineering course.',
+    meta: 'Flutter · 2026',
+  },
+  {
+    name: 'agent-orchestrator',
+    desc: 'Task router that drafts several reasoning paths, scores them, and logs every decision to SQLite.',
     meta: 'Python · 2026',
   },
   {
-    name: 'factor-research',
-    desc: 'Momentum / value / quality / low-vol decile backtests with Spearman IC on a 50-ticker US universe.',
-    meta: 'Python · 2026',
+    name: 'Press',
+    desc: 'Gym logger with anatomical muscle mapping. Open source, live backend.',
+    meta: 'TypeScript · 2026',
   },
   {
-    name: 'kelly-sizer',
-    desc: 'Full and fractional Kelly with volatility targeting — sizing from edge instead of gut feel.',
-    meta: 'Python · 2026',
+    name: 'smartalarm',
+    desc: 'Alarm that wakes you in light sleep via movement sensing — then an ESP32 motor opens the curtains.',
+    meta: 'JS / C++ · 2025',
   },
   {
-    name: 'regime-detector',
-    desc: '3-state Gaussian HMM plus GARCH(1,1) to classify and forecast low / mid / high volatility regimes.',
-    meta: 'Python · 2026',
+    name: 'FearJosh',
+    desc: 'Narrative psychological-horror game set in a sealed school. Object-oriented course final.',
+    meta: 'Java · 2025',
   },
   {
-    name: 'market-data-store',
-    desc: 'Parquet time-series store with a deterministic replay engine so backtests rerun bit-for-bit.',
+    name: 'EMAS3-Calendar-Fetcher',
+    desc: 'Pulls coursework deadlines into Google Keep automatically. Live.',
     meta: 'Python · 2026',
   },
-  {
-    name: 'strategy-dsl',
-    desc: 'Small language for writing strategies as text files — own parser and compiler, no YAML soup.',
-    meta: 'Python · 2026',
-  },
-  {
-    name: 'portfolio-risk-dashboard',
-    desc: 'VaR, CVaR, correlation, sector exposure and stress scenarios behind a FastAPI service.',
-    meta: 'Python · 2026',
-  },
+];
+
+/* The quant depth, kept as a compact series instead of eight rows. */
+const QUANT_SERIES = [
+  'backtest-harness',
+  'kelly-sizer',
+  'market-data-store',
+  'factor-research',
+  'regime-detector',
+  'strategy-dsl',
+  'pairs-trader',
+  'trading-bot',
+  'portfolio-risk-dashboard',
 ];
 
 const PHOTOS = [
@@ -76,29 +90,31 @@ export default function Home() {
         <section className="hero">
           <div>
             <p className="kicker">
-              Jakarta, Indonesia<span className="dot">·</span>UTC+7
+              Bogor / Jakarta, Indonesia<span className="dot">·</span>UTC+7
             </p>
             <h1>
-              Joshua Riangkamang builds <em>backtesting &amp; risk tooling</em> for
-              systematic traders.
+              Joshua Riangkamang builds <em>software that measures things.</em>
             </h1>
             <p className="lede">
-              I&apos;m a student in Indonesia and an intern at{' '}
-              <a href="https://www.acc.co.id" target="_blank" rel="noopener noreferrer">
-                Astra Sedaya Finance
+              I&apos;m an engineering undergrad at{' '}
+              <a href="https://www.ui.ac.id" target="_blank" rel="noopener noreferrer">
+                Universitas Indonesia
               </a>
-              . I write open-source quant infrastructure in Python — walk-forward
-              engines, position sizers, a Parquet market-data store — each with
-              tests and docs, all on{' '}
+              . I like instruments: gym loggers, sleep alarms, parking radars,
+              backtest engines — anything that turns the world into numbers you
+              can argue with. More of it is on{' '}
               <a href="https://github.com/JoshRiang" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
               .
             </p>
             <p className="lede">
-              Currently looking for investment-analyst or junior algo-trading roles.
-              Previously ran nightly walk-forward reports on a live NVDA / AVGO /
-              TSM / GLD book.
+              Currently interning at{' '}
+              <a href="https://www.acc.co.id" target="_blank" rel="noopener noreferrer">
+                Astra Sedaya Finance
+              </a>{' '}
+              (Starship Batch 23). Open to internships and junior engineering
+              roles.
             </p>
             <div className="hero-meta">
               <a href="mailto:joshuariangkamang@gmail.com">joshuariangkamang@gmail.com</a>
@@ -120,8 +136,8 @@ export default function Home() {
             <span className="section-label">Selected work</span>
           </div>
           <p className="section-note">
-            Eight repos I&apos;d defend in an interview. Everything is tested,
-            documented, and MIT-licensed — links go straight to the code.
+            Eight things I&apos;d demo in an interview — one per obsession.
+            Everything is open source; links go straight to the code.
           </p>
           <ol className="worklist">
             {WORK.map((w, i) => (
@@ -143,6 +159,20 @@ export default function Home() {
               </li>
             ))}
           </ol>
+          <div className="series">
+            <strong>Plus a nine-repo quant research series</strong> — walk-forward
+            backtests, Kelly sizing, factor library, regime detection, Parquet
+            data store, a strategy DSL, pairs trading, risk dashboard, execution
+            bot. All tested, documented, MIT:{' '}
+            {QUANT_SERIES.map((n, i) => (
+              <span key={n}>
+                <a href={`https://github.com/JoshRiang/${n}`} target="_blank" rel="noopener noreferrer">
+                  {n}
+                </a>
+                {i < QUANT_SERIES.length - 1 ? ' · ' : ''}
+              </span>
+            ))}
+          </div>
         </section>
 
         {/* ---------- experience ---------- */}
@@ -174,40 +204,57 @@ export default function Home() {
                 <p className="job-desc">
                   Kelly + volatility-targeted risk engine on a live Pluang
                   portfolio (NVDA / AVGO / TSM / GLD). Nightly walk-forward
-                  reports, regime detection, factor research — the repos above.
+                  reports, regime detection, factor research — the series above.
+                </p>
+              </div>
+            </li>
+            <li>
+              <span className="job-date">2024 — now</span>
+              <div>
+                <div className="job-role">
+                  Undergraduate <span className="job-co">· Universitas Indonesia</span>
+                </div>
+                <p className="job-desc">
+                  Engineering, 2024 cohort. Coursework so far spans digital
+                  design (VHDL), OOP, databases, and software engineering —
+                  several repos above started as coursework.
                 </p>
               </div>
             </li>
           </ul>
         </section>
 
-        {/* ---------- about ---------- */}
+        {/* ---------- about (placeholder — fill in your own bio) ---------- */}
         <section className="section" id="about">
           <div className="section-head">
             <span className="section-num">03</span>
             <span className="section-label">About</span>
           </div>
+          {/*
+            ABOUT — PLACEHOLDER.
+            Replace the three boxes below with your own bio (2–4 sentences
+            total is plenty), then delete this comment. Suggested shape:
+            1. who you are in one line, 2. what you're doing now,
+            3. what you want next / an invitation to talk.
+          */}
           <div className="about-text">
-            <p>
-              I got into markets through code, not finance classes: first a
-              trading bot with a kill switch, then the uncomfortable question of
-              whether any of it actually worked. That led to the backtest
-              harness, the Kelly sizer, and everything downstream. I&apos;m
-              skeptical of backtests by default — including my own — which is
-              why the replay engine is deterministic and the reports run
-              walk-forward.
+            <p className="ph">
+              [Who you are in one line — e.g. what you study, where, and the
+              kind of building you enjoy most.]
             </p>
-            <p>
-              Outside quant work I&apos;ve shipped a Flutter emergency-response
-              app and an offline on-device AI demo for Android. I also shoot
-              street photography around Jakarta on a Fuji X-T30 — a few frames
-              below.
+            <p className="ph">
+              [What you&apos;re doing now — internship, side interests,
+              something you&apos;re learning that excites you.]
+            </p>
+            <p className="ph">
+              [What you want next — roles you&apos;re open to, or just an
+              invitation to get in touch.]
             </p>
           </div>
           <div className="stackline">
-            <strong>Stack:</strong> Python · pandas · FastAPI · Streamlit ·
-            Parquet · PostgreSQL · Docker · TypeScript / Next.js · Flutter ·
-            Linux · Git
+            <strong>Stack:</strong> Python · Kotlin · Dart / Flutter · TypeScript ·
+            Java · C++ · VHDL · AVR Assembly · FastAPI · pandas · Parquet ·
+            Docker · Linux · Git
           </div>
         </section>
 
@@ -243,9 +290,9 @@ export default function Home() {
           </div>
           <div className="contact-box">
             <p>
-              Open to internships, junior analyst roles, and collaborations on
-              open-source trading infrastructure. The fastest way to reach me is
-              email — I reply within a day or two.
+              Open to internships, junior engineering roles, and collaborations
+              on open-source projects. The fastest way to reach me is email —
+              I reply within a day or two.
             </p>
             <a className="email-big" href="mailto:joshuariangkamang@gmail.com">
               joshuariangkamang@gmail.com
