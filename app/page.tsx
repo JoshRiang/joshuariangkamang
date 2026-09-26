@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const WORK = [
   {
     name: 'quant-research-platform',
-    desc: 'End-to-end backtest, paper-trade and dashboard platform. FastAPI + Streamlit, shipped in Docker.',
+    desc: 'End-to-end backtest, paper-trade and dashboard platform. Strategy plugins, walk-forward engine, FastAPI + Streamlit, shipped in Docker.',
     meta: 'Python · 2026',
   },
   {
@@ -29,12 +29,12 @@ const WORK = [
     meta: 'Python · 2026',
   },
   {
-    name: 'Press',
+    name: 'press',
     desc: 'Gym logger with anatomical muscle mapping. Open source, live backend.',
     meta: 'TypeScript · 2026',
   },
   {
-    name: 'smartalarm',
+    name: 'smart-alarm',
     desc: 'Alarm that wakes you in light sleep via movement sensing — then an ESP32 motor opens the curtains.',
     meta: 'JS / C++ · 2025',
   },
@@ -44,7 +44,7 @@ const WORK = [
     meta: 'Java · 2025',
   },
   {
-    name: 'EMAS3-Calendar-Fetcher',
+    name: 'emas3-calendar-fetcher',
     desc: 'Pulls coursework deadlines into Google Keep automatically. Live.',
     meta: 'Python · 2026',
   },
@@ -63,6 +63,13 @@ const QUANT_SERIES = [
   'portfolio-risk-dashboard',
 ];
 
+const SKILLS = [
+  { group: 'Languages', items: 'Python · TypeScript · Kotlin · Dart · Java · C++ · VHDL · AVR Assembly' },
+  { group: 'Quant / data', items: 'pandas · Parquet · walk-forward backtesting · Kelly sizing · HMM + GARCH regimes · factor research · VaR / CVaR' },
+  { group: 'Backend / mobile / web', items: 'FastAPI · Streamlit · Next.js / React · Flutter · Supabase / PostgreSQL · Docker · GitHub Actions · Linux / Git' },
+  { group: 'Hardware', items: 'ESP32 · VHDL · AVR · sensors & actuators (sleep alarm, parking radar)' },
+];
+
 const PHOTOS = [
   { src: 'photos/img_b88fd0d5655e.jpg', title: 'Three boys, golden hour', note: 'Jakarta street' },
   { src: 'photos/img_d29ca888a1f9.jpg', title: 'Satellite birds', note: 'Starlink dish, dusk' },
@@ -79,6 +86,8 @@ export default function Home() {
           <nav>
             <a href="#work">work</a>
             <a href="#experience">experience</a>
+            <a href="#education">education</a>
+            <a href="#skills">skills</a>
             <a href="#photos">photos</a>
             <a href="#contact">contact</a>
           </nav>
@@ -109,7 +118,7 @@ export default function Home() {
               .
             </p>
             <p className="lede">
-              Currently interning at{' '}
+              Previously interned at{' '}
               <a href="https://www.acc.co.id" target="_blank" rel="noopener noreferrer">
                 Astra Sedaya Finance
               </a>{' '}
@@ -175,18 +184,21 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ---------- experience ---------- */}
+        {/* ---------- experience (work history) ---------- */}
         <section className="section" id="experience">
           <div className="section-head">
             <span className="section-num">02</span>
             <span className="section-label">Experience</span>
           </div>
+          <p className="section-note">
+            Where I&apos;ve worked — engineering roles and self-directed research.
+          </p>
           <ul className="jobs">
             <li>
-              <span className="job-date">2025 — now</span>
+              <span className="job-date">2025 — Aug 2026</span>
               <div>
                 <div className="job-role">
-                  Intern <span className="job-co">· Astra Sedaya Finance (ACC), Starship Batch 23</span>
+                  Software engineering intern <span className="job-co">· Astra Sedaya Finance (ACC), Starship Batch 23</span>
                 </div>
                 <p className="job-desc">
                   Built an internal monitoring platform that automated roughly 70%
@@ -199,69 +211,93 @@ export default function Home() {
               <span className="job-date">2025 — now</span>
               <div>
                 <div className="job-role">
-                  Independent quant <span className="job-co">· self-directed</span>
+                  Independent quant researcher <span className="job-co">· self-directed</span>
                 </div>
                 <p className="job-desc">
-                  Kelly + volatility-targeted risk engine on a live Pluang
-                  portfolio (NVDA / AVGO / TSM / GLD). Nightly walk-forward
-                  reports, regime detection, factor research — the series above.
-                </p>
-              </div>
-            </li>
-            <li>
-              <span className="job-date">2024 — now</span>
-              <div>
-                <div className="job-role">
-                  Undergraduate <span className="job-co">· Universitas Indonesia</span>
-                </div>
-                <p className="job-desc">
-                  Engineering, 2024 cohort. Coursework so far spans digital
-                  design (VHDL), OOP, databases, and software engineering —
-                  several repos above started as coursework.
+                  Kelly + volatility-targeted risk engine on a live brokerage
+                  portfolio (NVDA / TSM / gold). Nightly walk-forward reports,
+                  regime detection, factor research — the series above.
                 </p>
               </div>
             </li>
           </ul>
         </section>
 
-        {/* ---------- about (placeholder — fill in your own bio) ---------- */}
-        <section className="section" id="about">
+        {/* ---------- education (study history) ---------- */}
+        <section className="section" id="education">
           <div className="section-head">
             <span className="section-num">03</span>
+            <span className="section-label">Education</span>
+          </div>
+          <p className="section-note">
+            Where I&apos;ve studied — one degree, done properly.
+          </p>
+          <ul className="jobs">
+            <li>
+              <span className="job-date">2024 — now</span>
+              <div>
+                <div className="job-role">
+                  Computer Engineering, B.Eng <span className="job-co">· Universitas Indonesia, 2024 cohort</span>
+                </div>
+                <p className="job-desc">
+                  Coursework so far spans digital design (VHDL), object-oriented
+                  programming (Java), databases, software engineering, and an IoT
+                  practicum — several repos above started as coursework, including
+                  a team-built 911 emergency-response platform.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        {/* ---------- skills ---------- */}
+        <section className="section" id="skills">
+          <div className="section-head">
+            <span className="section-num">04</span>
+            <span className="section-label">Skills</span>
+          </div>
+          <p className="section-note">
+            The short version: Python-first, ships with tests, comfortable from
+            circuits up to dashboards.
+          </p>
+          {SKILLS.map((s) => (
+            <div className="stackline" key={s.group}>
+              <strong>{s.group}:</strong> {s.items}
+            </div>
+          ))}
+        </section>
+
+        {/* ---------- about ---------- */}
+        <section className="section" id="about">
+          <div className="section-head">
+            <span className="section-num">05</span>
             <span className="section-label">About</span>
           </div>
-          {/*
-            ABOUT — PLACEHOLDER.
-            Replace the three boxes below with your own bio (2–4 sentences
-            total is plenty), then delete this comment. Suggested shape:
-            1. who you are in one line, 2. what you're doing now,
-            3. what you want next / an invitation to talk.
-          */}
           <div className="about-text">
-            <p className="ph">
-              [Who you are in one line — e.g. what you study, where, and the
-              kind of building you enjoy most.]
+            <p>
+              I&apos;m Joshua, a computer engineering undergrad at Universitas
+              Indonesia (2024 cohort) based in Bogor / Jakarta. I build
+              instruments — software that turns the world into numbers you can
+              argue with.
             </p>
-            <p className="ph">
-              [What you&apos;re doing now — internship, side interests,
-              something you&apos;re learning that excites you.]
+            <p>
+              Right now that means independent quant research on a live portfolio
+              plus open-source tools, after an engineering internship at Astra
+              Sedaya Finance (Starship Batch 23). On the side: on-device AI,
+              Flutter apps, and hardware hacks with ESP32s.
             </p>
-            <p className="ph">
-              [What you want next — roles you&apos;re open to, or just an
-              invitation to get in touch.]
+            <p>
+              Next I want internships or junior engineering roles in quant,
+              backend, or mobile — or interesting open-source collaborations.
+              Email is the fastest way to reach me.
             </p>
-          </div>
-          <div className="stackline">
-            <strong>Stack:</strong> Python · Kotlin · Dart / Flutter · TypeScript ·
-            Java · C++ · VHDL · AVR Assembly · FastAPI · pandas · Parquet ·
-            Docker · Linux · Git
           </div>
         </section>
 
         {/* ---------- photos ---------- */}
         <section className="section" id="photos">
           <div className="section-head">
-            <span className="section-num">04</span>
+            <span className="section-num">06</span>
             <span className="section-label">Photos</span>
           </div>
           <p className="section-note">
@@ -285,7 +321,7 @@ export default function Home() {
         {/* ---------- contact ---------- */}
         <section className="section" id="contact">
           <div className="section-head">
-            <span className="section-num">05</span>
+            <span className="section-num">07</span>
             <span className="section-label">Contact</span>
           </div>
           <div className="contact-box">
